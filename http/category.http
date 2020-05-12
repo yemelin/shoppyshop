@@ -1,0 +1,20 @@
+POST localhost:8080/api/categories
+Content-Type: application/json
+
+{
+  "name": "test category"
+}
+
+###
+GET localhost:8080/api/admin/categories
+
+###
+
+PUT localhost:8080/api/categories/1
+Content-Type: application/json
+
+{
+  "name": "cattycat"
+}
+
+###

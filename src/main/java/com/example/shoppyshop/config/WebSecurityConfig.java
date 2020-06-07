@@ -30,7 +30,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .authorizeRequests(authorize -> authorize
                         .mvcMatchers("/admin/api/**").hasRole("ADMIN")
-//                        .mvcMatchers("/admin/api/**").permitAll()
                         .mvcMatchers("/api/**").permitAll());
 
     }

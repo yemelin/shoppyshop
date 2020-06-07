@@ -1,8 +1,8 @@
 package com.example.shoppyshop.controllers;
 
 import com.example.shoppyshop.dto.AuthRequest;
-import com.example.shoppyshop.dto.UserDto;
-import com.example.shoppyshop.dto.UserRegisterDto;
+import com.example.shoppyshop.dto.UserResponseDto;
+import com.example.shoppyshop.dto.UserRegisterRequestDto;
 import com.example.shoppyshop.exceptions.BadRequestException;
 import com.example.shoppyshop.service.UserService;
 import org.modelmapper.ModelMapper;
@@ -38,8 +38,8 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public UserDto register(@Valid @RequestBody UserRegisterDto udto) {
-        return modelMapper.map(userService.registerNewUser(udto), UserDto.class);
+    public UserResponseDto register(@Valid @RequestBody UserRegisterRequestDto udto) {
+        return modelMapper.map(userService.registerNewUser(udto), UserResponseDto.class);
     }
 
     @PostMapping("/signin")

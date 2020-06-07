@@ -1,54 +1,60 @@
 package com.example.shoppyshop.controllers;
 
 import com.example.shoppyshop.config.NullAwareBeanUtilsBean;
-import com.example.shoppyshop.dto.CategoryCreateDto;
-import com.example.shoppyshop.dto.CategoryUpdateDto;
+import com.example.shoppyshop.dto.CategoryCreateRequestDto;
+import com.example.shoppyshop.dto.CategoryResponseDto;
+import com.example.shoppyshop.dto.CategoryUpdateRequestDto;
 import com.example.shoppyshop.exceptions.InternalErrorException;
 import com.example.shoppyshop.exceptions.NotFoundException;
 import com.example.shoppyshop.models.Category;
 import com.example.shoppyshop.models.CategoryRepository;
+import com.example.shoppyshop.service.CategoryService;
 import org.modelmapper.ModelMapper;
 import org.springframework.web.bind.annotation.*;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
 @RequestMapping("admin/api/categories")
 public class CategoryController {
-    private CategoryRepository categoryRepository;
-    private ModelMapper modelMapper;
-    private NullAwareBeanUtilsBean utilsBean;
 
-    public CategoryController(CategoryRepository categoryRepository, ModelMapper modelMapper, NullAwareBeanUtilsBean utilsBean) {
-        this.categoryRepository = categoryRepository;
+    private final CategoryService categoryService;
+    private final ModelMapper modelMapper;
+
+    public CategoryController(CategoryService categoryService, ModelMapper modelMapper) {
+        this.categoryService = categoryService;
         this.modelMapper = modelMapper;
-        this.utilsBean = utilsBean;
     }
 
     @GetMapping
-    public List<Category> findCategories() {return this.categoryRepository.findAll();}
+    public List<CategoryResponseDto> findCategories() {
+        List<CategoryResponseDto> ret = new ArrayList<>();
+        categoryService.findAll().forEach(cat -> ret.add(modelMapper.map(cat, CategoryResponseDto.class)));
+        return ret;
+    }
 
     @GetMapping("/{id}")
-    public Category findById(@PathVariable long id) {
-        return categoryRepository.findById(id).orElseThrow(()-> new NotFoundException(id));
+    public CategoryResponseDto findById(@PathVariable long id) {
+        return modelMapper.map(categoryService.findById(id), CategoryResponseDto.class);
     }
 
     @PostMapping
-    public Category create(@RequestBody CategoryCreateDto c) {
-        return categoryRepository.save(modelMapper.map(c, Category.class));
+    public CategoryResponseDto create(@RequestBody CategoryCreateRequestDto cdto) {
+        Category cat =  modelMapper.map(cdto, Category.class);
+        return modelMapper.map(categoryService.save(cat), CategoryResponseDto.class);
     }
 
     @PutMapping("/{id}")
-    public Category update(@RequestBody CategoryUpdateDto cdto, @PathVariable Long id) {
-        Category cat = categoryRepository.findById(id).orElseThrow(()->new NotFoundException(id));
+    public CategoryResponseDto update(@RequestBody CategoryUpdateRequestDto cdto, @PathVariable Long id) {
+        Category cat =  modelMapper.map(cdto, Category.class);
+        return modelMapper.map(categoryService.update(id, cat), CategoryResponseDto.class);
+    }
 
-        try {
-            utilsBean.copyProperties(cat, cdto);
-        }
-        catch( InvocationTargetException | IllegalAccessException e){
-            throw new InternalErrorException();
-        }
-        return categoryRepository.save(cat);
+    @PatchMapping("/{id}")
+    public CategoryResponseDto partialUpdate(@RequestBody CategoryUpdateRequestDto cdto, @PathVariable Long id) {
+        Category cat =  modelMapper.map(cdto, Category.class);
+        return modelMapper.map(categoryService.partialUpdate(id, cat), CategoryResponseDto.class);
     }
 }

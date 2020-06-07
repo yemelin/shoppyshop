@@ -1,18 +1,21 @@
 package com.example.shoppyshop.controllers;
 
 import com.example.shoppyshop.config.NullAwareBeanUtilsBean;
-import com.example.shoppyshop.dto.ProductShortDto;
-import com.example.shoppyshop.dto.SingleProductDto;
-import com.example.shoppyshop.dto.ProductUpdateDto;
+import com.example.shoppyshop.dto.ProductCreateRequestDto;
+import com.example.shoppyshop.dto.ProductShortResponseDto;
+import com.example.shoppyshop.dto.ProductResponseDto;
+import com.example.shoppyshop.dto.ProductUpdateRequestDto;
 import com.example.shoppyshop.exceptions.InternalErrorException;
 import com.example.shoppyshop.exceptions.NotFoundException;
 import com.example.shoppyshop.models.CategoryRepository;
 import com.example.shoppyshop.models.Product;
 import com.example.shoppyshop.models.ProductRepository;
+import com.example.shoppyshop.service.ProductService;
 import org.modelmapper.ModelMapper;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.security.RolesAllowed;
+import javax.validation.Valid;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,57 +23,58 @@ import java.util.List;
 @RestController
 @RequestMapping("admin/api/products")
 public class ProductController {
-    private ProductRepository productRepository;
-    private ModelMapper modelMapper;
-    private NullAwareBeanUtilsBean utilsBean;
-    private CategoryRepository categoryRepository;
 
-    public ProductController(ProductRepository productRepository, ModelMapper modelMapper, NullAwareBeanUtilsBean utilsBean, CategoryRepository categoryRepository) {
-        this.productRepository = productRepository;
+    private final ProductService productService;
+    private final ModelMapper modelMapper;
+
+    public ProductController(ProductService productService, ModelMapper modelMapper) {
+        this.productService = productService;
         this.modelMapper = modelMapper;
-        this.utilsBean = utilsBean;
-        this.categoryRepository = categoryRepository;
     }
 
+    // TODO: check if not-nil category ID is validated
     @PostMapping
-    public SingleProductDto create(@RequestBody ProductUpdateDto pdto) {
-        Product p = modelMapper.map(pdto, Product.class);
-        if(pdto.getCategoryId() != null) {
-            p.setCategory(categoryRepository.findById(pdto.getCategoryId()).orElseThrow(()->new NotFoundException(pdto.getCategoryId())));
-        }
-        return modelMapper.map(productRepository.save(p), SingleProductDto.class);
+    public ProductResponseDto create(@RequestBody @Valid ProductCreateRequestDto pdto) {
+        Product product = modelMapper.map(pdto, Product.class);
+        return modelMapper.map(productService.save(product), ProductResponseDto.class);
+//        if(pdto.getCategoryId() != null) {
+//            p.setCategory(categoryRepository.findById(pdto.getCategoryId()).orElseThrow(()->new NotFoundException(pdto.getCategoryId())));
+//        }
+//        return modelMapper.map(productRepository.save(p), ProductResponseDto.class);
     }
 
     @RolesAllowed("ADMIN")
     @GetMapping
-    public List<ProductShortDto> findAll() {
-        List<ProductShortDto> result = new ArrayList<>();
-        productRepository.findAll().forEach(p -> result.add(modelMapper.map(p, ProductShortDto.class)));
+    public List<ProductShortResponseDto> findAll() {
+        List<ProductShortResponseDto> result = new ArrayList<>();
+        productService.findAll().forEach(p -> result.add(modelMapper.map(p, ProductShortResponseDto.class)));
         return result;
 //        return StreamSupport.stream(productRepository.findAll().spliterator(), false).map((Product prod) -> modelMapper.map(prod, ProductShortDto.class)).collect(Collectors.toList());
         }
 
     @GetMapping("/{id}")
-    public SingleProductDto findById(@PathVariable Long id) {
-        return modelMapper.map(productRepository.findByIdFetchCategory(id).orElseThrow(()->new NotFoundException(id)), SingleProductDto.class);
+    public ProductResponseDto findById(@PathVariable Long id) {
+        return modelMapper.map(productService.findById(id), ProductResponseDto.class);
     }
 
     @PatchMapping("/{id}")
-    public SingleProductDto partialUpdate(@PathVariable Long id, @RequestBody ProductUpdateDto pdto) {
+    public ProductResponseDto partialUpdate(@PathVariable Long id, @RequestBody ProductUpdateRequestDto pdto) {
+        Product product = modelMapper.map(pdto, Product.class);
+        return modelMapper.map(productService.partialUpdate(id, product), ProductResponseDto.class);
 
-        Product p = productRepository.findByIdFetchCategory(id).orElseThrow(()-> new NotFoundException(id));
-        try {
-            utilsBean.copyProperties(p, pdto);
-        }
-        catch( InvocationTargetException | IllegalAccessException e){
-            throw new InternalErrorException();
-        }
-        System.out.println(pdto);
-        if(pdto.getCategoryId() != null) {
-            System.out.println(pdto);
-            p.setCategory(categoryRepository.findById(pdto.getCategoryId()).orElseThrow(()->new NotFoundException(pdto.getCategoryId())));
-        }
-        return modelMapper.map(productRepository.save(p), SingleProductDto.class);
+//        Product p = productRepository.findByIdFetchCategory(id).orElseThrow(()-> new NotFoundException(id));
+//        try {
+//            utilsBean.copyProperties(p, pdto);
+//        }
+//        catch( InvocationTargetException | IllegalAccessException e){
+//            throw new InternalErrorException();
+//        }
+//        System.out.println(pdto);
+//        if(pdto.getCategoryId() != null) {
+//            System.out.println(pdto);
+//            p.setCategory(categoryRepository.findById(pdto.getCategoryId()).orElseThrow(()->new NotFoundException(pdto.getCategoryId())));
+//        }
+//        return modelMapper.map(productRepository.save(p), ProductResponseDto.class);
     }
 
 

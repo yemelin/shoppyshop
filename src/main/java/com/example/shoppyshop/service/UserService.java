@@ -1,12 +1,9 @@
 package com.example.shoppyshop.service;
 
-import com.example.shoppyshop.dto.UserRegisterDto;
+import com.example.shoppyshop.dto.UserRegisterRequestDto;
 import com.example.shoppyshop.exceptions.AlreadyExistsException;
 import com.example.shoppyshop.models.User;
 import com.example.shoppyshop.models.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -14,10 +11,7 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.List;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -30,7 +24,7 @@ public class UserService implements UserDetailsService {
         this.userRepo = userRepo;
     }
 
-    public User registerNewUser(UserRegisterDto udto) {
+    public User registerNewUser(UserRegisterRequestDto udto) {
         if (userRepo.existsByUsername(udto.getUsername())){
             throw new AlreadyExistsException();
         }

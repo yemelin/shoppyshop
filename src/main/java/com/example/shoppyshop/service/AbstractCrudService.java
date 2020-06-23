@@ -1,6 +1,6 @@
 package com.example.shoppyshop.service;
 
-import com.example.shoppyshop.config.NullAwareBeanUtilsBean;
+import com.example.shoppyshop.helpers.NullAwareBeanUtilsBean;
 import com.example.shoppyshop.exceptions.InternalErrorException;
 import com.example.shoppyshop.exceptions.NotFoundException;
 

@@ -28,6 +28,7 @@ public class ProductController {
     }
 
     // TODO: check if not-nil category ID is validated
+    @RolesAllowed("ADMIN")
     @PostMapping
     public ProductResponseDto create(@RequestBody @Valid ProductCreateRequestDto pdto) {
         Product product = modelMapper.map(pdto, Product.class);

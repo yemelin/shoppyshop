@@ -1,9 +1,11 @@
-package com.example.shoppyshop.config;
+package com.example.shoppyshop.helpers;
 
 import org.apache.commons.beanutils.BeanUtilsBean;
+import org.springframework.stereotype.Component;
 
 import java.lang.reflect.InvocationTargetException;
 
+@Component
 public class NullAwareBeanUtilsBean extends BeanUtilsBean {
 
     @Override

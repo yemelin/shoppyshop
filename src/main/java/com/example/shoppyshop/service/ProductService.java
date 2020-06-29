@@ -1,6 +1,6 @@
 package com.example.shoppyshop.service;
 
-import com.example.shoppyshop.config.NullAwareBeanUtilsBean;
+import com.example.shoppyshop.helpers.NullAwareBeanUtilsBean;
 import com.example.shoppyshop.models.Category;
 import com.example.shoppyshop.models.Product;
 import com.example.shoppyshop.models.ProductRepository;

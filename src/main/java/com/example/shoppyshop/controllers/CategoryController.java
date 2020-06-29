@@ -1,18 +1,13 @@
 package com.example.shoppyshop.controllers;
 
-import com.example.shoppyshop.config.NullAwareBeanUtilsBean;
 import com.example.shoppyshop.dto.CategoryCreateRequestDto;
 import com.example.shoppyshop.dto.CategoryResponseDto;
 import com.example.shoppyshop.dto.CategoryUpdateRequestDto;
-import com.example.shoppyshop.exceptions.InternalErrorException;
-import com.example.shoppyshop.exceptions.NotFoundException;
 import com.example.shoppyshop.models.Category;
-import com.example.shoppyshop.models.CategoryRepository;
 import com.example.shoppyshop.service.CategoryService;
 import org.modelmapper.ModelMapper;
 import org.springframework.web.bind.annotation.*;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 

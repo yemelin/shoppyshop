@@ -8,6 +8,8 @@ jobs:
       postgres:
         image: postgres
         env:
+          POSTGRES_DB: testshop
+          POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
         options: >-
           --health-cmd pg_isready

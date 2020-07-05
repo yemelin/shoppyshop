@@ -36,7 +36,8 @@ jobs:
 
     - name: notify channel
       env:
-        ACTOR: ${{ github.actor }}
+        BOT_ID: ${{ secrets.TG_BOT_ID }}
+        CHAT_ID: ${{ secrets.TG_CHAT_ID }}
       run: sh .github/scripts/notify_tg.sh
 
 

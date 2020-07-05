@@ -38,6 +38,6 @@ jobs:
       env:
         BOT_ID: ${{ secrets.TG_BOT_ID }}
         CHAT_ID: ${{ secrets.TG_CHAT_ID }}
-      run: bash .github/scripts/notify_tg.sh
+      run: sh .github/scripts/notify_tg.sh
 
 

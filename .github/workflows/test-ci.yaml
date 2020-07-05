@@ -32,7 +32,7 @@ jobs:
     - name: trying to set vars
       env:
         ACTOR: ${{ github.actor }}
-#      run:
+      run:
     - name: notify channel
       run: sh .github/scripts/notify_tg.sh
 

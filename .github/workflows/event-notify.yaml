@@ -1,15 +1,17 @@
-name: run tests
+name: handle PR
 on: [pull_request, pull_request_review]
 jobs:
-  tests:
+  pr-notify:
     runs-on: ubuntu-latest
 
     steps:
     - name: display github context
       env:
-        GITHUB_CONTEXT: ${{ toJson(github) }}
+        GITHUB_CONTEXT: ${{ toJson(github.event.pull_request) }}
       run: echo "$GITHUB_CONTEXT"
 
+# TODO: checkout only to access bash script, need to improve this
+    - uses: actions/checkout@v2
     - name: notify channel
       env:
         BOT_ID: ${{ secrets.TG_BOT_ID }}

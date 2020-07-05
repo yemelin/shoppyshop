@@ -4,5 +4,6 @@ curl -X POST https://api.telegram.org/bot576734993:AAFhJQALvnwzXR8ZWlLGkRaZePlUc
 -d "text=dummy experimental bot message"
 
 echo trying to output env vars:
-echo repo is ${github.repository}
+
 echo actor is ${ACTOR}
+echo branch is ${GITHUB_REF##*/}

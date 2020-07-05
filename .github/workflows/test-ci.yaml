@@ -29,11 +29,14 @@ jobs:
     - name: run tests with maven
       run: echo fake tests run
 #      run: mvn test
-    - name: trying to set vars
+    - name: display github context
+      env:
+        GITHUB_CONTEXT: ${{ toJson(github) }}
+      run: echo "$GITHUB_CONTEXT"
+
+    - name: notify channel
       env:
         ACTOR: ${{ github.actor }}
-      run: echo set var $ACTOR
-    - name: notify channel
       run: sh .github/scripts/notify_tg.sh
 
 

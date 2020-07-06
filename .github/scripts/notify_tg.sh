@@ -5,8 +5,17 @@
 BRANCH_NAME=${GITHUB_REF##*/}
 echo "${GITHUB_EVENT_NAME}"
 
-EVENT="*event*: ${GITHUB_EVENT_NAME}"
-ACTOR="*actor*: ${GITHUB_ACTOR}"
+read -r -d '' HEADER <<- EOM
+*event*: ${GITHUB_EVENT_NAME}
+*actor*: ${GITHUB_ACTOR}
+EOM
+
+if [ -n "${ACTION}" ]; then
+  read -r -d '' HEADER <<- EOM
+  ${HEADER}
+  *action*: ${ACTION}
+EOM
+fi
 
 case "${GITHUB_EVENT_NAME}" in
   "push")
@@ -25,10 +34,7 @@ case "${GITHUB_EVENT_NAME}" in
 esac
 
 read -r -d '' MSG <<- EOM
-${EVENT}
-${ACTOR}
-${ACTION}
-${EMPTY_VAR}
+${HEADER}
 ${SUMMARY}
 EOM
 

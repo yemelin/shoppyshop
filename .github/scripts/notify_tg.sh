@@ -7,7 +7,7 @@ echo "${GITHUB_EVENT_NAME}"
 
 if [ "${GITHUB_EVENT_NAME}" != "push" ]; then
   curl -X POST https://api.telegram.org/bot${BOT_ID}/sendMessage -d chat_id=${CHAT_ID} \
-  -d "text=something PR-related happened"
+  -d "text=something PR-related happened, probably ${ACTION}"
   exit 0
 fi
 

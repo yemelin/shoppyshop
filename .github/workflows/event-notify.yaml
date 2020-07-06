@@ -21,8 +21,8 @@ jobs:
         BOT_ID: ${{ secrets.TG_BOT_ID }}
         CHAT_ID: ${{ secrets.TG_CHAT_ID }}
 
-        PR_LINK: ${{ github.pull_request._links.html.href }}
-        PR_TITLE: ${{ github.pull_request.title }}
+        PR_LINK: ${{ github.event.pull_request._links.html.href }}
+        PR_TITLE: ${{ github.event.pull_request.title }}
         ACTION: ${{ github.event.action }}
       run: bash .github/scripts/notify_tg.sh
 

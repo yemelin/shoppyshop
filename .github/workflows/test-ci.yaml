@@ -1,7 +1,5 @@
 name: run tests
 on:
-  pull_request:
-    types: [synchronize]
   push:
 
 jobs:

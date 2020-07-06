@@ -1,7 +1,7 @@
 name: handle PR
 on:
   pull_request:
-    types: [opened, reopened, closed, review_requested]
+    types: [opened, reopened, closed, review_requested, synchronize]
 
 jobs:
   pr-notify:

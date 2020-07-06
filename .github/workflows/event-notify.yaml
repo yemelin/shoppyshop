@@ -1,5 +1,8 @@
 name: handle PR
-on: pull_request
+on:
+  pull_request:
+    types: [opened, reopened, closed, review_requested]
+
 jobs:
   pr-notify:
     runs-on: ubuntu-latest
@@ -16,7 +19,7 @@ jobs:
       env:
         BOT_ID: ${{ secrets.TG_BOT_ID }}
         CHAT_ID: ${{ secrets.TG_CHAT_ID }}
-        EVENT: ${{ github.event.action }}
+        ACTION: ${{ github.event.action }}
       run: bash .github/scripts/notify_tg.sh
 
 

@@ -7,7 +7,7 @@ jobs:
     steps:
     - name: display github context
       env:
-        GITHUB_CONTEXT: ${{ toJson(github.event.pull_request) }}
+        GITHUB_CONTEXT: ${{ toJson(github) }}
       run: echo "$GITHUB_CONTEXT"
 
 # TODO: checkout only to access bash script, need to improve this

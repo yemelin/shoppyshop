@@ -1,0 +1,29 @@
+name: handle PR
+on:
+  pull_request:
+    types: [opened, reopened, closed, review_requested, synchronize]
+  pull_request_review:
+    types: [submitted]
+jobs:
+  pr-notify:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: display github context
+      env:
+        GITHUB_CONTEXT: ${{ toJson(github) }}
+      run: echo "$GITHUB_CONTEXT"
+
+# TODO: checkout only to access bash script, need to improve this
+    - uses: actions/checkout@v2
+    - name: notify channel
+      env:
+#        TODO: uncomment after secrets are added to repo settings
+#        BOT_ID: ${{ secrets.TG_BOT_ID }}
+#        CHAT_ID: ${{ secrets.TG_CHAT_ID }}
+        PR_LINK: ${{ github.event.pull_request._links.html.href }}
+        PR_TITLE: ${{ github.event.pull_request.title }}
+        ACTION: ${{ github.event.action }}
+      run: bash .github/scripts/notify_tg.sh
+
+

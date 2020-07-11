@@ -31,6 +31,9 @@ jobs:
       run: echo fake tests run
 #      run: mvn test
 
+    - name: check style
+      run: mvn checkstyle:check
+
     - name: display github context
       env:
         GITHUB_CONTEXT: ${{ toJson(github) }}

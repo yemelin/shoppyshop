@@ -129,7 +129,20 @@
 					<target>8</target>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-checkstyle-plugin</artifactId>
+				<version>3.1.1</version>
+				<configuration>
+					<consoleOutput>true</consoleOutput>
+					<encoding>UTF-8</encoding>
+					<configLocation>google_checks.xml</configLocation>
+					<violationSeverity>warning</violationSeverity>
+				</configuration>
+			</plugin>
+
 		</plugins>
 	</build>
+
 
 </project>

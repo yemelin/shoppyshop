@@ -36,5 +36,11 @@ jobs:
         GITHUB_CONTEXT: ${{ toJson(github) }}
       run: echo "$GITHUB_CONTEXT"
 
+    - uses: ./.github/actions/notify_tg
+      if: ${{ always() }}
+      with:
+        message: |
+          алярм!!! ${{ github.actor }} опять грохнул билд!
+          *branch*: [${{ github.ref }}](https://github.com/${github.repository}/tree/${{ github.ref }})"
 
 

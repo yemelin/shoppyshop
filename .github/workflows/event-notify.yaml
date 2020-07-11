@@ -1,0 +1,37 @@
+name: handle PR
+on:
+  pull_request:
+    types: [opened, reopened, closed, review_requested, synchronize]
+  pull_request_review:
+    types: [submitted]
+jobs:
+  pr-notify:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: display github context
+      env:
+        GITHUB_CONTEXT: ${{ toJson(github) }}
+      run: echo "$GITHUB_CONTEXT"
+
+# we have to checkout to access a private action
+    - uses: actions/checkout@v2
+    - uses: ./.github/actions/notify_tg
+      with:
+        message: |
+          *event*: ${{ github.event_name }}
+          *actor*: ${{ github.actor }}
+          *action*: ${{ github.event.action }}
+          "*PR*: [${{ github.event.pull_request.title }}](${{ github.event.pull_request._links.html.href }})"
+
+#        TODO: shall we pass tg bot secrets as env or args?
+#        tg-bot-token: ${{ secrets.TG_BOT_ID }}
+#        channel-id: ${{ secrets.TG_CHAT_ID }}
+
+#      TODO: uncomment after secrets are added to repo settings
+      env:
+        BOT_ID: ${{ secrets.TG_BOT_ID }}
+        CHAT_ID: ${{ secrets.TG_CHAT_ID }}
+
+
+

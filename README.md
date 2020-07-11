@@ -1,0 +1,1 @@
+![run tests](https://github.com/nmerkulov/shoppyshop/workflows/run%20tests/badge.svg)

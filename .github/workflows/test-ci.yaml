@@ -36,11 +36,16 @@ jobs:
         GITHUB_CONTEXT: ${{ toJson(github) }}
       run: echo "$GITHUB_CONTEXT"
 
+    - name: set env BRANCH_NAME
+      run: echo "::set-env name=BRANCH_NAME::${GITHUB_REF##*/}"
+
     - uses: ./.github/actions/notify_tg
       if: ${{ always() }}
       with:
         message: |
           алярм!!! ${{ github.actor }} опять грохнул билд!
-          *branch*: [${{ github.ref }}](https://github.com/${github.repository}/tree/${{ github.ref }})"
-
+          *branch*: [${BRANCH_NAME}](https://github.com/${{ github.repository }}/tree/${BRANCH_NAME})"
+      env:
+        BOT_ID: ${{ secrets.TG_BOT_ID }}
+        CHAT_ID: ${{ secrets.TG_CHAT_ID }}
 

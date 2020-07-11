@@ -3,8 +3,8 @@
 set -eu
 
 # add to secrets and remove
-BOT_ID=576734993:AAFhJQALvnwzXR8ZWlLGkRaZePlUcGGwMmA
-CHAT_ID=-1001174776301
+#BOT_ID=576734993:AAFhJQALvnwzXR8ZWlLGkRaZePlUcGGwMmA
+#CHAT_ID=-1001174776301
 
 #BRANCH_NAME=${GITHUB_REF##*/}
 
@@ -17,8 +17,10 @@ MSG=$1
 # "branch: [${BRANCH_NAME}](https://github.com/${GITHUB_REPOSITORY}/tree/${BRANCH_NAME})"
 
 # escaping _ and - for Telegram to parse Markdown correctly
+# it's not quite correct: in posix sh strings replacement is undefined!
 MSG=${MSG//-/\\-}
 MSG=${MSG//_/\\_}
+MSG=${MSG//!/\\!}
 
 echo "sending message: ${MSG}"
 

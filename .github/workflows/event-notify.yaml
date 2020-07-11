@@ -29,9 +29,9 @@ jobs:
 #        channel-id: ${{ secrets.TG_CHAT_ID }}
 
 #      TODO: uncomment after secrets are added to repo settings
-#      env:
-#        BOT_ID: ${{ secrets.TG_BOT_ID }}
-#        CHAT_ID: ${{ secrets.TG_CHAT_ID }}
+      env:
+        BOT_ID: ${{ secrets.TG_BOT_ID }}
+        CHAT_ID: ${{ secrets.TG_CHAT_ID }}
 
 
 

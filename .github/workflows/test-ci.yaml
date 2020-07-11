@@ -38,14 +38,15 @@ jobs:
 
     - name: extract branch name
       id: extract_branch
+      if: ${{ failure() }}
       run: echo "::set-output name=branch::${GITHUB_REF##*/}"
 
     - uses: ./.github/actions/notify_tg
-      if: ${{ always() }}
+      if: ${{ failure() }}
       with:
         message: |
           алярм!!! ${{ github.actor }} опять грохнул билд!
-          *branch*: [${{ steps.extract_branch.outputs.branch }}](https://github.com/${{ github.repository }}/tree/${{ steps.extract_branch.outputs.branch }})"
+          *branch*: [${{ steps.extract_branch.outputs.branch }}](https://github.com/${{ github.repository }}/tree/${{ steps.extract_branch.outputs.branch }})
       env:
         BOT_ID: ${{ secrets.TG_BOT_ID }}
         CHAT_ID: ${{ secrets.TG_CHAT_ID }}
